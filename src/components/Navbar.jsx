@@ -1,4 +1,3 @@
-import React from 'react';
 import logo from "../assets/portfolio.png";
 import { FaLinkedin, FaGithub, FaCode, FaGraduationCap } from 'react-icons/fa';
 

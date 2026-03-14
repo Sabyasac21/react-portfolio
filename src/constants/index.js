@@ -1,73 +1,257 @@
 import project1 from "../assets/projects/project-1.jpg";
 import project2 from "../assets/projects/project-2.jpg";
 import project3 from "../assets/projects/project-3.jpg";
-import project4 from "../assets/projects/project-4.jpg";
 
-export const HERO_CONTENT = `I am a passionate full stack developer with a knack for crafting robust and scalable web applications. With 2 years of hands-on experience, I have honed my skills in front-end technologies like React and Next.js, as well as back-end technologies like Node.js, MySQL, PostgreSQL, TypeScript and MongoDB. My goal is to leverage my expertise to create innovative solutions that drive business growth and deliver exceptional user experiences.`;
+export const NAV_LINKS = [
+  { label: "Experience", href: "#experience" },
+  { label: "Impact", href: "#impact" },
+  { label: "Stack", href: "#stack" },
+  { label: "Projects", href: "#projects" },
+  { label: "Architecture", href: "#architecture" },
+  { label: "Contact", href: "#contact" },
+];
 
-export const ABOUT_TEXT = `I am a dedicated and versatile full stack developer with a passion for creating efficient and user-friendly web applications. With 2 years of  experience, I have worked with a variety of technologies, including React, Next.js, Node.js, MySQL, PostgreSQL, and MongoDB. My journey in web development began with a deep curiosity for how things work, and it has evolved into a career where I continuously strive to learn and adapt to new challenges. I thrive in collaborative environments and enjoy solving complex problems to deliver high-quality solutions. Outside of coding, I enjoy staying active, exploring new technologies, and contributing to open-source projects.`;
+export const HERO_STATS = [
+  { label: "Years shipping production software", value: "2+" },
+  { label: "Primary focus", value: "Full Stack" },
+  { label: "Core systems", value: "React + FastAPI" },
+  { label: "Preferred operating model", value: "Product + Platform" },
+];
 
-export const EXPERIENCES = [
+export const EXPERIENCE = [
   {
-    year: "2023 - Present",
-    role: "Senior Full Stack Developer",
-    company: "Google Inc.",
-    description: `Led a team in developing and maintaining web applications using JavaScript, React.js, and Node.js. Implemented RESTful APIs and integrated with MongoDB databases. Collaborated with stakeholders to define project requirements and timelines.`,
-    technologies: ["Javascript", "React.js", "Next.js", "mongoDB"],
+    company: "Vengage.AI",
+    role: "Software Development Engineer (Full Stack)",
+    duration: "Oct 2024 - Present",
+    summary:
+      "Owning user-facing platform improvements and backend service delivery for conversational AI workflows, admin tooling, and observability.",
+    metrics: [
+      "Improved platform UI/UX, contributing to an estimated 25% increase in user satisfaction.",
+      "Reduced manual admin operations by roughly 90% through Auth0 migration tooling and bulk role workflows.",
+      "Improved debugging turnaround time by about 40% by centralizing logs through the ELK Stack.",
+    ],
+    technologies: [
+      "React",
+      "TypeScript",
+      "FastAPI",
+      "MySQL",
+      "Auth0",
+      "Docker",
+      "ELK Stack",
+      "REST APIs",
+    ],
+    architecture: {
+      headline: "Platform and internal operations layer",
+      points: [
+        "Built React + TypeScript interfaces for workflow-heavy product surfaces and internal admin paths.",
+        "Implemented FastAPI services backed by MySQL for role management, operational workflows, and platform data access.",
+        "Containerized services with Docker and pushed logs into ELK to make debugging and incident tracing materially faster.",
+      ],
+    },
   },
   {
-    year: "2022 - 2023",
+    company: "Almonds.ai",
     role: "Frontend Developer",
-    company: "Adobe",
-    description: `Designed and developed user interfaces for web applications using Next.js and React. Worked closely with backend developers to integrate frontend components with Node.js APIs. Implemented responsive designs and optimized frontend performance.`,
-    technologies: ["HTML", "CSS", "Vue.js", "mySQL"],
+    duration: "Apr 2024 - Sep 2024",
+    summary:
+      "Delivered responsive campaign experiences and reusable UI modules for a referral and rewards platform operating across multiple campaigns.",
+    metrics: [
+      "Shipped reusable React components to support campaign-specific reward flows.",
+      "Built responsive modules that held up across different campaign configurations and device sizes.",
+      "Worked in a product-facing delivery loop where iteration speed and UI consistency mattered.",
+    ],
+    technologies: ["React", "JavaScript", "Responsive UI", "Component Design", "Git", "GitHub"],
+    architecture: {
+      headline: "Campaign-oriented frontend system",
+      points: [
+        "Structured frontend modules so campaign logic could be adapted without rewriting core UI primitives.",
+        "Focused on responsive layouts and consistent interaction patterns for user-facing promotional flows.",
+        "Contributed to a codebase optimized for repeat launches across multiple campaign variants.",
+      ],
+    },
+  },
+];
+
+export const IMPACT_CARDS = [
+  {
+    value: "25%",
+    title: "UI/UX improvement",
+    description:
+      "Reworked key React product experiences to make platform flows clearer, faster, and easier for end users to complete.",
+    accent: "from-indigo-500/30 to-violet-500/10",
   },
   {
-    year: "2021 - 2022",
-    role: "Full Stack Developer",
-    company: "Facebook",
-    description: `Developed and maintained web applications using JavaScript, React.js, and Node.js. Designed and implemented RESTful APIs for data communication. Collaborated with cross-functional teams to deliver high-quality software products on schedule.`,
-    technologies: ["Python", "Svelte", "Three.js", "Postgres"],
+    value: "90%",
+    title: "Admin operations reduced",
+    description:
+      "Automated Auth0 migration and role assignment workflows through internal tooling instead of manual operational handling.",
+    accent: "from-emerald-500/30 to-teal-500/10",
   },
   {
-    year: "2020 - 2021",
-    role: "Software Engineer",
-    company: "Paypal",
-    description: `Contributed to the development of web applications using JavaScript, React.js, and Node.js. Managed databases and implemented data storage solutions using MongoDB. Worked closely with product managers to prioritize features and enhancements.`,
-    technologies: ["Ruby", "Rails", "PHP", "Sqlite"],
+    value: "40%",
+    title: "Debugging turnaround faster",
+    description:
+      "Centralized application logs with ELK so issues could be located quickly across services and environments.",
+    accent: "from-sky-500/30 to-indigo-500/10",
+  },
+];
+
+export const TECH_GROUPS = [
+  {
+    title: "Frontend",
+    description: "Interfaces that prioritize clarity, interaction quality, and scalable component composition.",
+    items: [
+      {
+        name: "React",
+        detail: "Primary UI framework for product interfaces and campaign experiences.",
+      },
+      {
+        name: "TypeScript",
+        detail: "Used to keep larger interfaces predictable as product complexity grows.",
+      },
+      {
+        name: "TailwindCSS",
+        detail: "Fast visual iteration for polished interfaces with consistent spacing and tokens.",
+      },
+    ],
+  },
+  {
+    title: "Backend",
+    description: "Service design focused on clarity, operational reliability, and clean API contracts.",
+    items: [
+      {
+        name: "FastAPI",
+        detail: "Used for backend services, admin workflows, and role-management tooling.",
+      },
+      {
+        name: "Node.js",
+        detail: "Comfortable building REST services and full-stack application backends.",
+      },
+      {
+        name: "REST APIs",
+        detail: "Designed and integrated service boundaries for frontend and backend collaboration.",
+      },
+    ],
+  },
+  {
+    title: "Data",
+    description: "Datastores selected based on product shape, query needs, and operational simplicity.",
+    items: [
+      {
+        name: "MySQL",
+        detail: "Used in structured backend services and operational dashboards.",
+      },
+      {
+        name: "MongoDB",
+        detail: "Used in full-stack project work where schema flexibility supported iteration speed.",
+      },
+    ],
+  },
+  {
+    title: "DevOps",
+    description: "Production readiness through containerization, observability, and repeatable delivery.",
+    items: [
+      {
+        name: "Docker",
+        detail: "Containerized services to standardize environments and deployment behavior.",
+      },
+      {
+        name: "ELK Stack",
+        detail: "Centralized logs for troubleshooting, visibility, and faster incident response.",
+      },
+      {
+        name: "Auth0",
+        detail: "Implemented migration and role-based access workflows for internal operations.",
+      },
+    ],
   },
 ];
 
 export const PROJECTS = [
   {
-    title: "E-Commerce Website",
+    title: "Full-Stack Ecommerce Platform",
     image: project2,
-    address:"https://frontend-orcin-pi.vercel.app/",
-    description:
-      "A fully functional e-commerce website with features like product listing, shopping cart, and user authentication.",
-    technologies: ["HTML", "CSS", "React", "Node.js", "MongoDB"],
+    liveUrl: "https://frontend-orcin-pi.vercel.app/",
+    repoUrl: "https://github.com/Sabyasac21?tab=repositories",
+    summary:
+      "A commerce application focused on browsing, conversion flows, cart state, and full-stack data handling.",
+    architecture:
+      "React frontend driving product discovery and cart workflows, backed by API services and MongoDB persistence for product and order data.",
+    features: [
+      "Product listing and detail flows",
+      "Cart and purchase-oriented interactions",
+      "Authentication-aware shopping experience",
+    ],
+    stack: ["React", "MongoDB", "Node.js", "REST APIs"],
   },
   {
-    title: "Finance Management App",
+    title: "Finance / Task Management Application",
     image: project1,
-    address:"https://financetracker-woad.vercel.app",
-    description:
-      "An application for managing tasks and projects, with features such as task creation, assignment, and progress tracking.",
-    technologies: ["React.js", "CSS", "Antd", "MongoDb", "Node.js"],
+    liveUrl: "https://financetracker-woad.vercel.app",
+    repoUrl: "https://github.com/Sabyasac21?tab=repositories",
+    summary:
+      "A productivity-oriented application that combines financial tracking with structured task and workflow management.",
+    architecture:
+      "React-driven dashboard experience with stateful workflow interactions, backed by service endpoints and persistent data storage.",
+    features: [
+      "Task and workflow organization",
+      "Finance tracking views and dashboards",
+      "Operational UI designed for frequent repeat usage",
+    ],
+    stack: ["React", "Node.js", "MongoDB", "Ant Design"],
   },
   {
-    title: "Portfolio Website",
+    title: "Engineering Portfolio System",
     image: project3,
-    address:"/",
-    description:
-      "A personal portfolio website showcasing projects, skills, and contact information.",
-    technologies: ["HTML", "CSS", "React", "Bootstrap"],
+    liveUrl: "#top",
+    repoUrl: "https://github.com/Sabyasac21",
+    summary:
+      "A portfolio rebuilt as a product-grade engineering narrative with technical storytelling, motion design, and architecture visualization.",
+    architecture:
+      "Vite + React foundation, motion-driven interactions, sectioned storytelling, and a visual system optimized for speed and clarity.",
+    features: [
+      "Experience timeline with deep technical context",
+      "Interactive stack and architecture visualizations",
+      "Production-style design language with restrained animation",
+    ],
+    stack: ["React", "Vite", "TailwindCSS", "Framer Motion"],
   },
- 
+];
+
+export const ARCHITECTURE_FLOW = [
+  {
+    title: "React Frontend",
+    description: "Interactive product surfaces, dashboards, and admin tooling.",
+  },
+  {
+    title: "FastAPI Services",
+    description: "Typed API contracts and backend workflows powering product operations.",
+  },
+  {
+    title: "MySQL Persistence",
+    description: "Structured storage for operational data, roles, and service state.",
+  },
+  {
+    title: "Docker Runtime",
+    description: "Consistent packaging and deployment behavior across environments.",
+  },
+  {
+    title: "ELK Observability",
+    description: "Centralized logging for visibility, debugging, and incident response.",
+  },
+];
+
+export const ACHIEVEMENTS = [
+  "Built internal operational tooling instead of relying on repetitive manual admin work.",
+  "Worked across frontend experience, backend services, authentication, and observability in production-oriented systems.",
+  "Balanced user-facing polish with technical depth, especially in workflow-heavy product surfaces.",
+  "Operated comfortably in React ecosystems while shipping backend APIs and infrastructure-adjacent improvements.",
 ];
 
 export const CONTACT = {
-  address: "Sector-38 Gurugram, Haryana",
-  phoneNo: "+91 8434279833 ",
   email: "sabyasachinishant100@gmail.com",
+  location: "Gurugram, Haryana, India",
+  github: "https://github.com/Sabyasac21",
+  linkedin: "https://www.linkedin.com/in/sabyasachi-nishant-1843761b1",
+  resume: "/sabyasachi-nishant-resume.html",
 };
