@@ -36,17 +36,13 @@ const fadeUp = {
 const sectionViewport = { once: true, amount: 0.2 };
 const IMPACT_SIGNAL_DURATION = 3200;
 const IMPACT_SIGNAL_START_DELAY = 180;
-const easeInOutCubic = (t) =>
-  t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
 function App() {
   const [activeExperience, setActiveExperience] = useState(EXPERIENCE[0].company);
   const [activeImpact, setActiveImpact] = useState(null);
   const initialTech = `${TECH_GROUPS[0].title}:${TECH_GROUPS[0].items[0].name}`;
   const [activeTech, setActiveTech] = useState(initialTech);
-  const [impactSignalProgress, setImpactSignalProgress] = useState(0);
   const impactStoryRef = useRef(null);
-  const impactFlowRef = useRef(null);
 
   const particles = useMemo(
     () =>
@@ -78,45 +74,17 @@ function App() {
 
   useEffect(() => {
     if (!selectedImpact?.storySteps || !impactStoryRef.current) {
-      setImpactSignalProgress(0);
       return;
     }
 
-    let frameId = 0;
-    let timeoutId = 0;
-
-    timeoutId = window.setTimeout(() => {
-      const startTime = performance.now();
-
-      const animate = (currentTime) => {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / IMPACT_SIGNAL_DURATION, 1);
-        const eased = easeInOutCubic(progress);
-
-        setImpactSignalProgress(eased);
-
-        if (impactFlowRef.current) {
-          const flowRect = impactFlowRef.current.getBoundingClientRect();
-          const flowHeight = impactFlowRef.current.offsetHeight;
-          const ballDocumentY = window.scrollY + flowRect.top + flowHeight * eased;
-          const viewportAnchor = window.innerHeight * 0.58;
-          const targetScrollY = Math.max(0, ballDocumentY - viewportAnchor);
-
-          window.scrollTo(0, targetScrollY);
-        }
-
-        if (progress < 1) {
-          frameId = window.requestAnimationFrame(animate);
-        }
-      };
-
-      frameId = window.requestAnimationFrame(animate);
+    const timeoutId = window.setTimeout(() => {
+      impactStoryRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
     }, IMPACT_SIGNAL_START_DELAY);
 
-    return () => {
-      window.clearTimeout(timeoutId);
-      window.cancelAnimationFrame(frameId);
-    };
+    return () => window.clearTimeout(timeoutId);
   }, [selectedImpact]);
 
   return (
@@ -485,14 +453,30 @@ function App() {
                     activeImpact === card.id ? "impact-card-active" : ""
                   } ${card.storySteps ? "cursor-pointer" : "cursor-default"}`}
                 >
+                  {card.storySteps ? (
+                    <div className="impact-card-indicator" aria-hidden="true">
+                      <span className="impact-card-indicator-label">Trace</span>
+                      <div className="impact-card-indicator-ring">
+                        <span className="impact-card-indicator-dot" />
+                      </div>
+                      <motion.div
+                        animate={{ x: activeImpact === card.id ? 4 : 0 }}
+                        transition={{
+                          duration: 0.9,
+                          repeat: Infinity,
+                          repeatType: "reverse",
+                          ease: "easeInOut",
+                        }}
+                        className="impact-card-indicator-arrow"
+                      >
+                        <FaArrowRight />
+                      </motion.div>
+                    </div>
+                  ) : null}
                   <p className="text-5xl font-semibold text-white">{card.value}</p>
                   <h3 className="mt-6 text-xl font-semibold text-white">{card.title}</h3>
                   <p className="mt-4 text-sm leading-7 text-slate-300">{card.description}</p>
-                  {card.storySteps ? (
-                    <p className="mt-6 text-xs uppercase tracking-[0.28em] text-indigo-100/70">
-                      Click to explore the implementation story
-                    </p>
-                  ) : null}
+                  {card.storySteps ? <div className="impact-card-rail" aria-hidden="true" /> : null}
                 </motion.button>
               ))}
             </div>
@@ -517,7 +501,7 @@ function App() {
                       </h3>
                     </div>
 
-                    <div ref={impactFlowRef} className="impact-branch-flow">
+                    <div className="impact-branch-flow">
                       <motion.div
                         className="impact-branch-spine"
                         initial={{ scaleY: 0, opacity: 0.55 }}
@@ -525,9 +509,15 @@ function App() {
                         transition={{ duration: 1.45, ease: [0.22, 1, 0.36, 1] }}
                       />
                       <motion.div
+                        key={selectedImpact.id}
                         className="impact-branch-signal"
-                        animate={false}
-                        style={{ top: `${impactSignalProgress * 100}%` }}
+                        initial={{ top: "0%", opacity: 0 }}
+                        animate={{ top: "100%", opacity: [0, 1, 1, 0.9] }}
+                        transition={{
+                          delay: IMPACT_SIGNAL_START_DELAY / 1000,
+                          duration: IMPACT_SIGNAL_DURATION / 1000,
+                          ease: "easeInOut",
+                        }}
                       />
                       {selectedImpact.storySteps.map((step, index) => (
                         <motion.article
