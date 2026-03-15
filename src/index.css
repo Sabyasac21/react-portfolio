@@ -137,6 +137,104 @@ button {
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
   }
 
+  .impact-card-active {
+    @apply border-indigo-300/40;
+    box-shadow:
+      0 0 36px rgba(99, 102, 241, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  }
+
+  .impact-story-flow-wrap {
+    @apply mt-8 pt-4;
+  }
+
+  .impact-story-intro {
+    @apply mb-12 max-w-3xl;
+  }
+
+  .impact-branch-flow {
+    position: relative;
+    margin-top: 0;
+    display: grid;
+    gap: 2.75rem;
+  }
+
+  .impact-branch-spine {
+    position: absolute;
+    left: 1rem;
+    top: 0.25rem;
+    bottom: 0.25rem;
+    width: 2px;
+    border-radius: 9999px;
+    background: linear-gradient(
+      180deg,
+      rgba(129, 140, 248, 0.2) 0%,
+      rgba(129, 140, 248, 0.75) 18%,
+      rgba(34, 197, 94, 0.6) 50%,
+      rgba(129, 140, 248, 0.35) 100%
+    );
+    box-shadow: 0 0 28px rgba(99, 102, 241, 0.18);
+    transform-origin: top center;
+  }
+
+  .impact-branch-signal {
+    position: absolute;
+    left: calc(1rem - 5px);
+    width: 12px;
+    height: 12px;
+    border-radius: 9999px;
+    background: linear-gradient(135deg, #818cf8, #22c55e);
+    box-shadow:
+      0 0 18px rgba(129, 140, 248, 0.9),
+      0 0 42px rgba(34, 197, 94, 0.45);
+    transform: translateY(-50%);
+  }
+
+  .impact-branch-node-card {
+    position: relative;
+    margin-left: 2.75rem;
+    padding: 0 0 0 1.5rem;
+  }
+
+  .impact-branch-node-card::before {
+    content: "";
+    position: absolute;
+    left: -1.75rem;
+    top: 1.2rem;
+    width: 2rem;
+    height: 2px;
+    border-radius: 9999px;
+    background: linear-gradient(90deg, rgba(129, 140, 248, 0.65), rgba(129, 140, 248, 0.2));
+  }
+
+  .impact-branch-node {
+    @apply flex items-center gap-3;
+    position: relative;
+  }
+
+  .impact-branch-dot {
+    position: relative;
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 9999px;
+    background: linear-gradient(135deg, #818cf8, #22c55e);
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.45);
+    animation: branchPulse 2.6s ease-in-out infinite;
+  }
+
+  .impact-branch-dot::before {
+    content: "";
+    position: absolute;
+    inset: -6px;
+    border-radius: 9999px;
+    border: 1px solid rgba(129, 140, 248, 0.22);
+  }
+
+  .impact-branch-node-card h4,
+  .impact-branch-node-card p {
+    max-width: 38rem;
+  }
+
   .tech-node {
     @apply rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-sm text-slate-300 transition duration-300 hover:border-indigo-300/50 hover:text-white;
   }
@@ -196,6 +294,58 @@ button {
 }
 
 @media (min-width: 1024px) {
+  .impact-branch-spine {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .impact-branch-signal {
+    left: calc(50% - 6px);
+  }
+
+  .impact-branch-node-card {
+    width: calc(50% - 2rem);
+    margin-left: 0;
+    padding: 0;
+  }
+
+  .impact-branch-node-left {
+    justify-self: start;
+    padding-right: 3.75rem;
+    text-align: right;
+  }
+
+  .impact-branch-node-right {
+    justify-self: end;
+    padding-left: 3.75rem;
+  }
+
+  .impact-branch-node-left::before,
+  .impact-branch-node-right::before {
+    top: 1.2rem;
+    width: 3rem;
+  }
+
+  .impact-branch-node-left::before {
+    left: auto;
+    right: -3rem;
+    background: linear-gradient(90deg, rgba(129, 140, 248, 0.18), rgba(129, 140, 248, 0.7));
+  }
+
+  .impact-branch-node-right::before {
+    left: -3rem;
+    background: linear-gradient(90deg, rgba(129, 140, 248, 0.7), rgba(129, 140, 248, 0.18));
+  }
+
+  .impact-branch-node-left .impact-branch-node {
+    justify-content: flex-end;
+  }
+
+  .impact-branch-node-left h4,
+  .impact-branch-node-left p {
+    margin-left: auto;
+  }
+
   .architecture-connector {
     position: absolute;
     left: calc(100% + 0.75rem);
@@ -229,6 +379,18 @@ button {
   }
   50% {
     filter: hue-rotate(-18deg);
+  }
+}
+
+@keyframes branchPulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 1;
   }
 }
 

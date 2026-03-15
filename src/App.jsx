@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   FaArrowRight,
@@ -34,14 +34,19 @@ const fadeUp = {
 };
 
 const sectionViewport = { once: true, amount: 0.2 };
-
-const sectionTitleClass =
-  "text-sm font-semibold uppercase tracking-[0.35em] text-indigo-300/80";
+const IMPACT_SIGNAL_DURATION = 3200;
+const IMPACT_SIGNAL_START_DELAY = 180;
+const easeInOutCubic = (t) =>
+  t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
 function App() {
   const [activeExperience, setActiveExperience] = useState(EXPERIENCE[0].company);
+  const [activeImpact, setActiveImpact] = useState(null);
   const initialTech = `${TECH_GROUPS[0].title}:${TECH_GROUPS[0].items[0].name}`;
   const [activeTech, setActiveTech] = useState(initialTech);
+  const [impactSignalProgress, setImpactSignalProgress] = useState(0);
+  const impactStoryRef = useRef(null);
+  const impactFlowRef = useRef(null);
 
   const particles = useMemo(
     () =>
@@ -68,6 +73,51 @@ function App() {
       title: TECH_GROUPS[0].title,
       ...TECH_GROUPS[0].items[0],
     };
+
+  const selectedImpact = IMPACT_CARDS.find((card) => card.id === activeImpact);
+
+  useEffect(() => {
+    if (!selectedImpact?.storySteps || !impactStoryRef.current) {
+      setImpactSignalProgress(0);
+      return;
+    }
+
+    let frameId = 0;
+    let timeoutId = 0;
+
+    timeoutId = window.setTimeout(() => {
+      const startTime = performance.now();
+
+      const animate = (currentTime) => {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / IMPACT_SIGNAL_DURATION, 1);
+        const eased = easeInOutCubic(progress);
+
+        setImpactSignalProgress(eased);
+
+        if (impactFlowRef.current) {
+          const flowRect = impactFlowRef.current.getBoundingClientRect();
+          const flowHeight = impactFlowRef.current.offsetHeight;
+          const ballDocumentY = window.scrollY + flowRect.top + flowHeight * eased;
+          const viewportAnchor = window.innerHeight * 0.58;
+          const targetScrollY = Math.max(0, ballDocumentY - viewportAnchor);
+
+          window.scrollTo(0, targetScrollY);
+        }
+
+        if (progress < 1) {
+          frameId = window.requestAnimationFrame(animate);
+        }
+      };
+
+      frameId = window.requestAnimationFrame(animate);
+    }, IMPACT_SIGNAL_START_DELAY);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+      window.cancelAnimationFrame(frameId);
+    };
+  }, [selectedImpact]);
 
   return (
     <div
@@ -149,21 +199,12 @@ function App() {
 
             <div className="grid w-full gap-16 lg:grid-cols-[1.25fr_0.75fr] lg:items-center">
               <div>
-                <motion.p
-                  custom={0}
-                  variants={fadeUp}
-                  initial="hidden"
-                  animate="visible"
-                  className={sectionTitleClass}
-                >
-                  Production-minded engineering portfolio
-                </motion.p>
                 <motion.h1
                   custom={0.1}
                   variants={fadeUp}
                   initial="hidden"
                   animate="visible"
-                  className="mt-6 max-w-4xl text-5xl font-semibold leading-[0.95] text-white sm:text-6xl lg:text-7xl"
+                  className="max-w-4xl text-5xl font-semibold leading-[0.95] text-white sm:text-6xl lg:text-7xl"
                 >
                   Sabyasachi <span className="gradient-text inline-block">Nishant</span>
                 </motion.h1>
@@ -249,10 +290,7 @@ function App() {
                 <div className="hero-card">
                   <div className="flex items-center justify-between border-b border-white/10 pb-5">
                     <div>
-                      <p className="text-sm uppercase tracking-[0.32em] text-indigo-300/80">
-                        Engineering profile
-                      </p>
-                      <p className="mt-2 text-2xl font-semibold text-white">
+                      <p className="text-2xl font-semibold text-white">
                         Product UI meets systems thinking
                       </p>
                     </div>
@@ -310,16 +348,10 @@ function App() {
           >
             <div className="section-header">
               <div>
-                <p className={sectionTitleClass}>Professional Experience</p>
-                <h2 className="mt-4 text-3xl font-semibold text-white sm:text-4xl">
+                <h2 className="text-3xl font-semibold text-white sm:text-4xl">
                   Shipping product improvements with measurable operational impact
                 </h2>
               </div>
-              <p className="max-w-2xl text-base leading-7 text-slate-400">
-                Experience is presented as systems work, not a resume dump. Each role includes
-                product impact, the stack in play, and the architecture decisions behind the
-                output.
-              </p>
             </div>
 
             <div className="mt-12 grid gap-6">
@@ -353,9 +385,6 @@ function App() {
                         </div>
 
                         <div className="flex items-center gap-3 self-start">
-                          <div className="hidden rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs uppercase tracking-[0.25em] text-slate-400 sm:block">
-                            Expand details
-                          </div>
                           <motion.div
                             animate={{ rotate: isOpen ? 180 : 0 }}
                             transition={{ duration: 0.25 }}
@@ -387,9 +416,6 @@ function App() {
                         >
                           <div className="mt-8 grid gap-8 border-t border-white/10 pt-8 lg:grid-cols-[1.1fr_0.9fr]">
                             <div>
-                              <p className="text-sm uppercase tracking-[0.3em] text-slate-500">
-                                Impact metrics
-                              </p>
                               <div className="mt-5 space-y-4">
                                 {item.metrics.map((metric) => (
                                   <div
@@ -403,9 +429,6 @@ function App() {
                             </div>
 
                             <div>
-                              <p className="text-sm uppercase tracking-[0.3em] text-slate-500">
-                                Architecture explanation
-                              </p>
                               <div className="mt-5 rounded-3xl border border-white/10 bg-slate-950/70 p-6">
                                 <p className="text-lg font-semibold text-white">
                                   {item.architecture.headline}
@@ -439,30 +462,102 @@ function App() {
           >
             <div className="section-header">
               <div>
-                <p className={sectionTitleClass}>Engineering Impact</p>
-                <h2 className="mt-4 text-3xl font-semibold text-white sm:text-4xl">
-                  Outcomes framed as engineering leverage, not feature volume
+                <h2 className="text-3xl font-semibold text-white sm:text-4xl">
+                  Impact Delivered
                 </h2>
               </div>
             </div>
 
             <div className="mt-12 grid gap-6 lg:grid-cols-3">
               {IMPACT_CARDS.map((card, index) => (
-                <motion.article
+                <motion.button
                   key={card.title}
+                  type="button"
                   initial={{ opacity: 0, y: 24 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={sectionViewport}
                   transition={{ duration: 0.5, delay: index * 0.08 }}
                   whileHover={{ y: -8, scale: 1.01 }}
-                  className={`impact-card bg-gradient-to-br ${card.accent}`}
+                  onClick={() =>
+                    setActiveImpact(activeImpact === card.id ? null : card.storySteps ? card.id : null)
+                  }
+                  className={`impact-card bg-gradient-to-br text-left ${card.accent} ${
+                    activeImpact === card.id ? "impact-card-active" : ""
+                  } ${card.storySteps ? "cursor-pointer" : "cursor-default"}`}
                 >
                   <p className="text-5xl font-semibold text-white">{card.value}</p>
                   <h3 className="mt-6 text-xl font-semibold text-white">{card.title}</h3>
                   <p className="mt-4 text-sm leading-7 text-slate-300">{card.description}</p>
-                </motion.article>
+                  {card.storySteps ? (
+                    <p className="mt-6 text-xs uppercase tracking-[0.28em] text-indigo-100/70">
+                      Click to explore the implementation story
+                    </p>
+                  ) : null}
+                </motion.button>
               ))}
             </div>
+
+            <AnimatePresence initial={false}>
+              {selectedImpact?.storySteps ? (
+                <motion.div
+                  key={selectedImpact.id}
+                  ref={impactStoryRef}
+                  initial={{ opacity: 0, y: 24 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 16 }}
+                  transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <div className="impact-story-flow-wrap">
+                    <div className="impact-story-intro">
+                      <p className="text-sm uppercase tracking-[0.32em] text-indigo-300/80">
+                        {selectedImpact.value} impact story
+                      </p>
+                      <h3 className="mt-3 text-2xl font-semibold text-white">
+                        {selectedImpact.storyTitle}
+                      </h3>
+                    </div>
+
+                    <div ref={impactFlowRef} className="impact-branch-flow">
+                      <motion.div
+                        className="impact-branch-spine"
+                        initial={{ scaleY: 0, opacity: 0.55 }}
+                        animate={{ scaleY: 1, opacity: 1 }}
+                        transition={{ duration: 1.45, ease: [0.22, 1, 0.36, 1] }}
+                      />
+                      <motion.div
+                        className="impact-branch-signal"
+                        animate={false}
+                        style={{ top: `${impactSignalProgress * 100}%` }}
+                      />
+                      {selectedImpact.storySteps.map((step, index) => (
+                        <motion.article
+                          key={step.title}
+                          initial={{ opacity: 0, y: 18 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{
+                            duration: 0.6,
+                            delay:
+                              IMPACT_SIGNAL_START_DELAY / 1000 + 0.55 + index * 0.42,
+                          }}
+                          className={`impact-branch-node-card ${
+                            index % 2 === 0 ? "impact-branch-node-left" : "impact-branch-node-right"
+                          }`}
+                        >
+                          <div className="impact-branch-node">
+                            <span className="impact-branch-dot" />
+                            <span className="text-xs font-semibold uppercase tracking-[0.28em] text-indigo-200/80">
+                              Step {index + 1}
+                            </span>
+                          </div>
+                          <h4 className="mt-5 text-2xl font-semibold text-white">{step.title}</h4>
+                          <p className="mt-4 text-base leading-8 text-slate-300">{step.detail}</p>
+                        </motion.article>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
+              ) : null}
+            </AnimatePresence>
           </motion.section>
 
           <motion.section
@@ -475,15 +570,10 @@ function App() {
           >
             <div className="section-header">
               <div>
-                <p className={sectionTitleClass}>Tech Stack Visualization</p>
-                <h2 className="mt-4 text-3xl font-semibold text-white sm:text-4xl">
+                <h2 className="text-3xl font-semibold text-white sm:text-4xl">
                   A capability map across frontend, backend, data, and delivery
                 </h2>
               </div>
-              <p className="max-w-2xl text-base leading-7 text-slate-400">
-                Hover or tap into the stack to see how each technology has been used in actual
-                product and platform work.
-              </p>
             </div>
 
             <div className="mt-12 grid gap-8 xl:grid-cols-[1.1fr_0.9fr]">
@@ -524,19 +614,13 @@ function App() {
               </div>
 
               <div className="glass-panel p-8">
-                <p className="text-sm uppercase tracking-[0.28em] text-slate-500">
-                  Selected capability
-                </p>
-                <h3 className="mt-4 text-3xl font-semibold text-white">{selectedTech.name}</h3>
+                <h3 className="text-3xl font-semibold text-white">{selectedTech.name}</h3>
                 <p className="mt-2 text-sm uppercase tracking-[0.28em] text-indigo-300/80">
                   {selectedTech.title}
                 </p>
                 <p className="mt-6 text-base leading-7 text-slate-300">{selectedTech.detail}</p>
 
                 <div className="mt-10 rounded-3xl border border-white/10 bg-white/[0.04] p-6">
-                  <p className="text-sm uppercase tracking-[0.3em] text-slate-500">
-                    How it shows up
-                  </p>
                   <div className="mt-5 space-y-4">
                     <div className="rounded-2xl border border-white/10 bg-slate-950/80 p-4">
                       <p className="text-sm font-medium text-white">Production delivery</p>
@@ -568,8 +652,7 @@ function App() {
           >
             <div className="section-header">
               <div>
-                <p className={sectionTitleClass}>Featured Projects</p>
-                <h2 className="mt-4 text-3xl font-semibold text-white sm:text-4xl">
+                <h2 className="text-3xl font-semibold text-white sm:text-4xl">
                   Projects presented as products and systems, not thumbnails
                 </h2>
               </div>
@@ -596,10 +679,7 @@ function App() {
 
                   <div className="space-y-6">
                     <div>
-                      <p className="text-sm uppercase tracking-[0.28em] text-indigo-300/80">
-                        Case study
-                      </p>
-                      <h3 className="mt-4 text-3xl font-semibold text-white">{project.title}</h3>
+                      <h3 className="text-3xl font-semibold text-white">{project.title}</h3>
                       <p className="mt-4 text-base leading-7 text-slate-300">{project.summary}</p>
                     </div>
 
@@ -672,16 +752,10 @@ function App() {
           >
             <div className="section-header">
               <div>
-                <p className={sectionTitleClass}>Architecture Diagrams</p>
-                <h2 className="mt-4 text-3xl font-semibold text-white sm:text-4xl">
+                <h2 className="text-3xl font-semibold text-white sm:text-4xl">
                   A technical view of how the stack fits together in production
                 </h2>
               </div>
-              <p className="max-w-2xl text-base leading-7 text-slate-400">
-                The intent here is to show systems reasoning: UI state enters service boundaries,
-                data lands in durable storage, workloads run in containers, and logs remain
-                observable.
-              </p>
             </div>
 
             <div className="mt-12 rounded-[32px] border border-white/10 bg-slate-950/80 p-6 sm:p-8">
@@ -696,12 +770,9 @@ function App() {
                       className="architecture-node"
                     >
                       <div className="flex items-center justify-between">
-                        <p className="text-xs uppercase tracking-[0.32em] text-indigo-300/80">
-                          Layer {index + 1}
-                        </p>
                         <span className="h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_18px_rgba(34,197,94,0.75)]" />
                       </div>
-                      <h3 className="mt-5 text-xl font-semibold text-white">{item.title}</h3>
+                      <h3 className="mt-3 text-xl font-semibold text-white">{item.title}</h3>
                       <p className="mt-3 text-sm leading-6 text-slate-400">{item.description}</p>
                     </motion.div>
 
@@ -735,8 +806,7 @@ function App() {
           >
             <div className="section-header">
               <div>
-                <p className={sectionTitleClass}>Achievements</p>
-                <h2 className="mt-4 text-3xl font-semibold text-white sm:text-4xl">
+                <h2 className="text-3xl font-semibold text-white sm:text-4xl">
                   The pattern across the work is ownership, leverage, and technical range
                 </h2>
               </div>
@@ -768,8 +838,7 @@ function App() {
           >
             <div className="contact-panel">
               <div className="max-w-2xl">
-                <p className={sectionTitleClass}>Contact</p>
-                <h2 className="mt-4 text-3xl font-semibold text-white sm:text-4xl">
+                <h2 className="text-3xl font-semibold text-white sm:text-4xl">
                   Available for product engineering roles where execution quality is visible
                 </h2>
                 <p className="mt-6 text-base leading-7 text-slate-300">

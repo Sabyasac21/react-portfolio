@@ -74,25 +74,97 @@ export const EXPERIENCE = [
 
 export const IMPACT_CARDS = [
   {
+    id: "ui-ux-improvement",
     value: "25%",
     title: "UI/UX improvement",
     description:
       "Reworked key React product experiences to make platform flows clearer, faster, and easier for end users to complete.",
     accent: "from-indigo-500/30 to-violet-500/10",
+    storyTitle: "How the platform UI became more stable and usable",
+    storySteps: [
+      {
+        title: "Stabilized the admin portal experience",
+        detail:
+          "Cleaned up problem areas in the admin portal where the interface felt unreliable and inconsistent during daily operational use.",
+      },
+      {
+        title: "Removed friction from slow and blocked states",
+        detail:
+          "Addressed UI issues tied to slow rendering, weak error handling, and startup states where screens could get stuck and force a manual refresh.",
+      },
+      {
+        title: "Made loading behavior explicit for users",
+        detail:
+          "Improved interaction safety by enabling and disabling functional UI elements like buttons and text inputs while APIs were fetching or the page was loading.",
+      },
+      {
+        title: "Turned fragile flows into predictable workflows",
+        detail:
+          "The result was a cleaner and more dependable interface that reduced confusion, prevented invalid actions, and made the platform feel faster even during async operations.",
+      },
+    ],
   },
   {
+    id: "admin-operations",
     value: "90%",
     title: "Admin operations reduced",
     description:
       "Automated Auth0 migration and role assignment workflows through internal tooling instead of manual operational handling.",
     accent: "from-emerald-500/30 to-teal-500/10",
+    storyTitle: "How admin access management moved from manual work to bulk operations",
+    storySteps: [
+      {
+        title: "Removed one-by-one access management in Auth0",
+        detail:
+          "Earlier, admins had to open Auth0, select each user individually, and assign access one at a time. The same manual process existed for organizations, where permissions were granted separately for every org.",
+      },
+      {
+        title: "Migrated existing Auth0 data into the local system",
+        detail:
+          "To remove that operational bottleneck without losing existing information, we migrated users and organizations already present in Auth0 into our local database while retaining the previous data structure.",
+      },
+      {
+        title: "Enabled bulk access updates for users and organizations",
+        detail:
+          "Once the data was available locally, admins could grant or remove access in bulk for both users and organizations instead of repeating the same workflow one record at a time.",
+      },
+      {
+        title: "Simplified metadata operations into single-click actions",
+        detail:
+          "Metadata management was also streamlined, so adding or updating metadata for users or organizations became a much faster action that could be completed in a single click.",
+      },
+    ],
   },
   {
+    id: "debugging-turnaround",
     value: "40%",
     title: "Debugging turnaround faster",
     description:
       "Centralized application logs with ELK so issues could be located quickly across services and environments.",
     accent: "from-sky-500/30 to-indigo-500/10",
+    storyTitle: "How debugging moved from container-by-container checks to centralized visibility",
+    storySteps: [
+      {
+        title: "Moved beyond manual Docker-based log checks",
+        detail:
+          "Earlier, debugging depended on running Docker commands to inspect container health and read logs service by service, which made issue investigation slower and more fragmented.",
+      },
+      {
+        title: "Introduced a centralized logging system",
+        detail:
+          "We implemented a centralized logging setup so logs from multiple services could be collected and viewed in one place instead of being checked separately at the container level.",
+      },
+      {
+        title: "Made log analysis easier through time-based organization",
+        detail:
+          "Because logs were sorted by time, it became much easier to trace incidents, follow request flow across services, and understand what happened during failures.",
+      },
+      {
+        title: "Reduced debugging effort and improved operational clarity",
+        detail:
+          "This change reduced debugging effort by about 40% and made day-to-day troubleshooting faster, clearer, and more reliable for engineers working across services.",
+      },
+    ],
   },
 ];
 
