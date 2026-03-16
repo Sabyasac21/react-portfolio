@@ -658,12 +658,12 @@ function App() {
                   transition={{ duration: 0.6, delay: index * 0.08 }}
                   className="project-card"
                 >
-                  <div className="overflow-hidden rounded-[28px] border border-white/10 bg-slate-950/80">
+                  <div className="h-[260px] overflow-hidden rounded-[28px] border border-white/10 bg-slate-950/80 sm:h-[320px] lg:h-[420px]">
                     <img
                       src={project.image}
                       alt={project.title}
                       loading="lazy"
-                      className="h-full max-h-[420px] w-full object-cover object-top transition duration-700 hover:scale-[1.03]"
+                      className="block h-full w-full object-cover object-top transition duration-700 hover:scale-[1.03]"
                     />
                   </div>
 

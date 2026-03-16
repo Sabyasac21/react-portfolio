@@ -1,6 +1,6 @@
 import project1 from "../assets/projects/project-1.jpg";
-import project2 from "../assets/projects/project-2.jpg";
 import project3 from "../assets/projects/project-3.jpg";
+import ecommerceBanner from "../assets/projects/EcommerceBanner.png";
 
 export const NAV_LINKS = [
   { label: "Experience", href: "#experience" },
@@ -242,7 +242,7 @@ export const TECH_GROUPS = [
 export const PROJECTS = [
   {
     title: "Full-Stack Ecommerce Platform",
-    image: project2,
+    image: ecommerceBanner,
     liveUrl: "https://frontend-orcin-pi.vercel.app/",
     repoUrl: "https://github.com/Sabyasac21?tab=repositories",
     summary:
