@@ -633,14 +633,7 @@ function App() {
             </div>
           </motion.section>
 
-          <motion.section
-            id="projects"
-            initial="hidden"
-            whileInView="visible"
-            viewport={sectionViewport}
-            variants={fadeUp}
-            className="section-block"
-          >
+          <section id="projects" className="section-block">
             <div className="section-header">
               <div>
                 <h2 className="text-3xl font-semibold text-white sm:text-4xl">
@@ -655,7 +648,7 @@ function App() {
                   key={project.title}
                   initial={{ opacity: 0, y: 28 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={sectionViewport}
+                  viewport={{ once: true, amount: 0.08 }}
                   transition={{ duration: 0.6, delay: index * 0.08 }}
                   className="project-card"
                 >
@@ -748,7 +741,7 @@ function App() {
                 </motion.article>
               ))}
             </div>
-          </motion.section>
+          </section>
 
           <motion.section
             id="architecture"
