@@ -1,6 +1,7 @@
 import project1 from "../assets/projects/project-1.jpg";
 import project3 from "../assets/projects/project-3.jpg";
 import ecommerceBanner from "../assets/projects/EcommerceBanner.png";
+import goferWorker from "../assets/projects/gofer-worker.png";
 
 export const NAV_LINKS = [
   { label: "Experience", href: "#experience" },
@@ -240,6 +241,24 @@ export const TECH_GROUPS = [
 ];
 
 export const PROJECTS = [
+  {
+    title: "Gofer Worker",
+    image: goferWorker,
+    downloadUrl: "/downloads/gofer-worker-v1.0.11.apk",
+    downloadName: "gofer-worker-v1.0.11.apk",
+    summary:
+      "An Android worker app that connects nearby helpers with customers who need reliable, on-demand assistance at their doorstep.",
+    architecture:
+      "Flutter mobile client connected to real-time task services, worker availability, job lifecycle tracking, notifications, and backend-backed earnings history.",
+    features: [
+      "Receive and respond to nearby work requests",
+      "Track active jobs from acceptance through completion",
+      "Maintain worker availability, job history, and earnings",
+      "Direct Android download — no email or tester approval required",
+    ],
+    stack: ["Flutter", "Android", "Real-time APIs", "Notifications"],
+    releaseMeta: "Android 7.0+ · Version 1.0.11 · 59 MB",
+  },
   {
     title: "Full-Stack Ecommerce Platform",
     image: ecommerceBanner,

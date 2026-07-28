@@ -5,6 +5,7 @@ import {
   FaChevronDown,
   FaCodeBranch,
   FaDocker,
+  FaDownload,
   FaEnvelope,
   FaExternalLinkAlt,
   FaGithub,
@@ -706,25 +707,42 @@ function App() {
                       ))}
                     </div>
 
+                    {project.releaseMeta ? (
+                      <p className="text-sm text-slate-400">{project.releaseMeta}</p>
+                    ) : null}
+
                     <div className="flex flex-wrap gap-4">
-                      <a
-                        href={project.repoUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="secondary-button"
-                      >
-                        Github
-                        <FaGithub />
-                      </a>
-                      <a
-                        href={project.liveUrl}
-                        target={project.liveUrl.startsWith("http") ? "_blank" : undefined}
-                        rel="noreferrer"
-                        className="primary-button"
-                      >
-                        Live Demo
-                        <FaExternalLinkAlt className="text-xs" />
-                      </a>
+                      {project.repoUrl ? (
+                        <a
+                          href={project.repoUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="secondary-button"
+                        >
+                          Github
+                          <FaGithub />
+                        </a>
+                      ) : null}
+                      {project.downloadUrl ? (
+                        <a
+                          href={project.downloadUrl}
+                          download={project.downloadName}
+                          className="primary-button"
+                        >
+                          Download for Android
+                          <FaDownload className="text-xs" />
+                        </a>
+                      ) : (
+                        <a
+                          href={project.liveUrl}
+                          target={project.liveUrl.startsWith("http") ? "_blank" : undefined}
+                          rel="noreferrer"
+                          className="primary-button"
+                        >
+                          Live Demo
+                          <FaExternalLinkAlt className="text-xs" />
+                        </a>
+                      )}
                     </div>
                   </div>
                 </motion.article>
