@@ -1,7 +1,7 @@
 {
   "headers": [
     {
-      "source": "/downloads/gofer-worker-v1.0.11.apk",
+      "source": "/downloads/gofer-worker-v1.0.12.apk",
       "headers": [
         {
           "key": "Content-Type",
@@ -9,7 +9,7 @@
         },
         {
           "key": "Content-Disposition",
-          "value": "attachment; filename=\"gofer-worker-v1.0.11.apk\""
+          "value": "attachment; filename=\"gofer-worker-v1.0.12.apk\""
         },
         {
           "key": "Cache-Control",

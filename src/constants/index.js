@@ -244,8 +244,8 @@ export const PROJECTS = [
   {
     title: "Gofer Worker",
     image: goferWorker,
-    downloadUrl: "/downloads/gofer-worker-v1.0.11.apk",
-    downloadName: "gofer-worker-v1.0.11.apk",
+    downloadUrl: "/downloads/gofer-worker-v1.0.12.apk",
+    downloadName: "gofer-worker-v1.0.12.apk",
     summary:
       "An Android worker app that connects nearby helpers with customers who need reliable, on-demand assistance at their doorstep.",
     architecture:
@@ -257,7 +257,7 @@ export const PROJECTS = [
       "Direct Android download — no email or tester approval required",
     ],
     stack: ["Flutter", "Android", "Real-time APIs", "Notifications"],
-    releaseMeta: "Android 7.0+ · Version 1.0.11 · 59 MB",
+    releaseMeta: "Android 7.0+ · Version 1.0.12 · 59 MB",
   },
   {
     title: "Full-Stack Ecommerce Platform",
